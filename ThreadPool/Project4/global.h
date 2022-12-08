@@ -1,0 +1,12 @@
+#pragma once
+#include <iostream>
+#include <thread>
+#include <queue>
+#include <vector>
+#include <functional>
+#include <condition_variable>
+#include <mutex>
+#include <future>
+#include <type_traits> 
+#include <algorithm>
+#include <list>
