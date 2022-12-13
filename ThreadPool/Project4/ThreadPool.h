@@ -24,7 +24,7 @@ public:
 
 	//void EnqueueJob(std::function<void()>job);
 	template<class F, class...Args>
-	std::future<typename std::invoke_result<F, Args...>::type> EnqueueJob(F f, Args... args);
+	std::future<typename std::invoke_result<F, Args...>::type> EnqueueJob(F&& f, Args&&... args);
 
 	//c++14
 	/*template <class F, class... Args>
@@ -34,7 +34,7 @@ public:
 #pragma region c++17
 
 template<class F, class ...Args>
-inline std::future<typename std::invoke_result<F, Args...>::type> ThreadPool::EnqueueJob(F f, Args ...args)
+inline std::future<typename std::invoke_result<F, Args...>::type> ThreadPool::EnqueueJob(F&& f, Args&& ...args)
 {
 	if (stop_all)
 	{
@@ -42,7 +42,7 @@ inline std::future<typename std::invoke_result<F, Args...>::type> ThreadPool::En
 	}
 
 	using return_type = typename std::invoke_result<F, Args...>::type;
-	auto job = std::make_shared<std::packaged_task<return_type()>>(std::bind(f, args...));
+	auto job = std::make_shared<std::packaged_task<return_type()>>(std::bind(std::forward<F>(f), std::forward<Args>(args)...));
 	std::future<return_type> job_result_future = job->get_future();
 	{
 		std::lock_guard<std::mutex> lock(m_job_q_);
