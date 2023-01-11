@@ -3,8 +3,8 @@
 #define ACCOUNT_MAX 30
 #define STRING_MAX 20
 using std::cout;
-using std::endl;
 using std::cin;
+using std::endl;
 class Account
 {
 private:
@@ -12,12 +12,20 @@ private:
 	int id;
 	int balance;
 public:
-	Account():name(nullptr),id(0),balance(0) {}
-	Account(const char* _n, int _id, int _bal=0) :id(_id), balance(_bal)
+	Account() :name(nullptr), id(0), balance(0) {}
+	Account(const char* _n, int _id, int _bal = 0) :id(_id), balance(_bal)
 	{
 		int strsize = strlen(_n);
 		name = new char[strsize + 1];
 		strcpy(name, _n);
+	}
+	Account(const Account& _account)
+	{
+		int strsize = strlen(_account.name);
+		name = new char[strsize + 1];
+		strcpy(name, _account.name);
+		balance = _account.balance;
+		id = _account.id;
 	}
 	~Account()
 	{
@@ -57,7 +65,7 @@ private:
 	int list_size;
 	Account* SearchAccount(int id)
 	{
-		for (int i=0;i<list_size;i++)
+		for (int i = 0; i < list_size; i++)
 		{
 			if (account_list[i]->GetID() == id)
 			{
@@ -67,9 +75,9 @@ private:
 		return nullptr;
 	}
 public:
-	AccountManager():account_list(nullptr), list_size(0)
+	AccountManager() :account_list(nullptr), list_size(0)
 	{
-		account_list = new Account*[ACCOUNT_MAX];
+		account_list = new Account * [ACCOUNT_MAX];
 	}
 	void PrintMenu()
 	{
@@ -143,7 +151,7 @@ public:
 			cout << "없는 아이디" << endl;
 			return;
 		}
-		cout<<"현재 금액: "<<a->GetBalance()<<endl;
+		cout << "현재 금액: " << a->GetBalance() << endl;
 	}
 };
 enum class Menu

@@ -15,22 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="1.클래스 기본.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="2.클래스 완성 _ 생성자,소멸자.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="2-2.클래스 완성 _ 은행 시스템.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="2-3.클래스 완성 _ const,static.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="복사생성자.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="은행시스템+복사생성자.cpp">
+    <ClCompile Include="상속의 이해.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
