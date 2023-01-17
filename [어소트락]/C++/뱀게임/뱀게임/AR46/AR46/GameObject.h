@@ -4,16 +4,25 @@
 class GameObject
 {
 public:
+	enum class E_Direction
+	{
+		Right,
+		Left,
+		Up,
+		Down,
+	};
 	void Initialize();
 	void Update();
 	void Render();
 	void Release();
-	void SetWChar(wchar_t _ch);
 	void SetPos(Vector2 _pos);
+	void RenderClear();
 public:
 
 private:
-	wchar_t mCh;
 	Vector2 mPos;
+	E_Direction mDir;
+
+	Node* mBody;
 };
 

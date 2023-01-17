@@ -52,3 +52,13 @@ struct Vector2
 	int x;
 	int y;
 };
+
+const int offsetX = 40;
+const int offsetY = 20;
+
+struct Node
+{
+	Node* next;
+	Node* prev;
+	wchar_t ch;
+};

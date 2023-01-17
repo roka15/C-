@@ -3,14 +3,16 @@
 void Application::Initialize()
 {
 	bEnable = true;
-	m_Scene[(UINT)eSceneType::Play].AddGameObject(L'¡İ', Vector2{ 5,5 });
+	m_Scene[(UINT)eSceneType::Play].AddGameObject(Vector2{ 5,5 });
 	mPlayScene = &m_Scene[(UINT)eSceneType::Play];
+	mPlayScene->Initialize();
 }
 
 void Application::Run()
 {
 	while (bEnable)
 	{
+		Sleep(500);
 		mPlayScene->Update();
 		mPlayScene->Render();
 	}
