@@ -8,7 +8,7 @@ void GameObject::Initialize()
 	mBody = new Node();
 	mBody->prev = nullptr;
 	mBody->next = nullptr;
-	mBody->ch = L'¡Ý';
+	mBody->ch = L'¡Ü';
 }
 
 void GameObject::Update()
