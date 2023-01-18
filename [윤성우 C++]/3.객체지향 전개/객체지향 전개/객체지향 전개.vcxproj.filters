@@ -18,5 +18,8 @@
     <ClCompile Include="상속의 이해.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="상속과 다형성.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
