@@ -17,6 +17,7 @@
 			memory_pool_info();
 			memory_pool_info(std::size_t capacity, std::size_t _size);
 			~memory_pool_info();
+			bool AddMemoryPool(std::size_t _capacity, std::size_t _size);
 
 			byte* current;
 			std::vector<byte*> memorys;
@@ -29,7 +30,7 @@
 		static int AssignSize(std::size_t _size);
 	
 	private:
-		static std::map<std::size_t,memory_pool_info> m_memory_pools;
+		static std::map<std::size_t,memory_pool_info*> m_memory_pools;
 	};
 
 //}

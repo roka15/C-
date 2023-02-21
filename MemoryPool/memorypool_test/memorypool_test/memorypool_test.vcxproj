@@ -141,10 +141,14 @@
   <ItemGroup>
     <ClInclude Include="CommonInclude.h" />
     <ClInclude Include="MemoryPool.h" />
+    <ClInclude Include="MemoryPool_2.h" />
+    <ClInclude Include="RBT.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MemoryPool.cpp" />
+    <ClCompile Include="MemoryPool_2.cpp" />
+    <ClCompile Include="RBT.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
