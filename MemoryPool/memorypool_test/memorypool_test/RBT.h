@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <queue>
 enum class NodeType
 {
 	None,
@@ -61,12 +62,106 @@ public:
 	NodeType type;
 	bool is_extra;
 };
+template<typename Key, typename Value>
+class Iterator
+{
+public:
+	Iterator() {}
+	~Iterator() {}
+
+	class MapIterator
+	{
+	public:
+		MapIterator() :curptr(nullptr) {}
+		MapIterator(Node<Key, Value>* ptr) :curptr(ptr)
+		{
+			if (ptr == nullptr)
+				return;
+			if (node_array.size() == 0)
+			{
+				std::queue<Node<Key, Value>*> nodequeue;
+				nodequeue.push(curptr);
+				int index = 0;
+
+				while (nodequeue.empty() == false)
+				{
+					Node<Key, Value>* cur = nodequeue.front();
+					nodequeue.pop();
+
+					node_array.push_back(cur);
+					Node<Key, Value>* left = cur->left;
+					Node<Key, Value>* right = cur->right;
+					bool nillflag = false;
+					//현재 노드의 다음 노드들이 nill 인지 검사해서 
+					//nill 이면 queue에 안넣음.
+					if (left->type == NodeType::Black &&
+						left->left == nullptr && left->right == nullptr)
+					{
+						nillflag = true;
+					}
+					else
+					{
+						nodequeue.push(cur->left);
+					}
+					if (right->type == NodeType::Black &&
+						right->left == nullptr && right->right == nullptr)
+					{
+						if (nillflag == true)
+						{
+							continue;
+						}
+					}
+					else
+					{
+						nodequeue.push(cur->right);
+					}
+
+				}
+				node_array.push_back(nullptr);
+			}
+			cur_index = 1;
+		}
+		~MapIterator()
+		{
+			curptr = nullptr;
+			for (int i = 0; i < node_array.size(); i++)
+				node_array[i] = nullptr;
+			node_array.clear();
+			node_array.~vector();
+		}
+		bool operator==(const Iterator<Key, Value>::MapIterator& _ref)
+		{
+			return curptr == _ref.curptr;
+		}
+		bool operator!=(const Iterator<Key, Value>::MapIterator& _ref)
+		{
+			return curptr != _ref.curptr;
+		}
+		Value& operator*()
+		{
+			return curptr->data;
+		}
+		typename Iterator<Key, Value>::MapIterator& operator++(int)
+		{
+			curptr = node_array[cur_index++];
+			return *this;
+		}
+
+	private:
+		Node<Key, Value>* curptr;
+		std::vector<Node<Key, Value>*> node_array;
+		int cur_index;
+	};
+
+};
+
 template <typename Key, typename Value>
 class RBT
 {
 private:
 	Node<Key, Value>* root;
 	int count;
+	std::vector<Node<Key, Value>*> ptrs;
 	static Node<Key, Value>* nilnode;
 	//static Node<T>* extranode;
 private:
@@ -617,7 +712,7 @@ private:
 	{
 		Node<Key, Value>* ptr = (*_root);
 		// 노드가 nil 이면 추가할 node 넣기.
-		if (*_root == nilnode||*_root==nullptr)
+		if (*_root == nilnode || *_root == nullptr)
 		{
 			*_root = _node;
 		}
@@ -775,18 +870,19 @@ private:
 
 #pragma endregion
 public:
-	RBT() :root(nilnode),count(0)
+	RBT() :root(nilnode), count(0)
 	{
 
 	}
-	void Push(Key _key, Value  _value)
+	void insert(std::pair<Key,Value> _pair)
 	{
-		Node<Key, Value>* node = new Node<Key, Value>(_key, _value, nilnode, NodeType::Red);
+		Node<Key, Value>* node = new Node<Key, Value>(_pair.first, _pair.second, nilnode, NodeType::Red);
+		ptrs.push_back(node);
 		push_node(&root, node);
 		RBT_Insert(&node);
 		count++;
 	}
-	bool Pop(Key _key)
+	bool erase(Key _key)
 	{
 		Node<Key, Value>** serchnode;
 		if (serch_node(&root, _key, serchnode))
@@ -797,28 +893,39 @@ public:
 		}
 		return false;
 	}
-	bool Find(Key _key, Value& _value)
+	bool find_node(Key _key, Node<Key,Value>*& _node)
 	{
 		Node<Key, Value> dummy;
 		Node<Key, Value>** serchnode;
 		if (serch_node(&root, _key, serchnode))
 		{
-			_value = (*serchnode)->data;
+			_node = (*serchnode);
 			return true;
 		}
 		return false;
 	}
-	int Size()
+	typename Iterator<Key,Value>::MapIterator find(Key _key)
+	{
+		Node<Key, Value>* node = nullptr;
+		bool flag = find_node(_key, node);
+		if (flag)
+		{
+			return Iterator<Key, Value>::MapIterator(node);
+		}
+		else
+			return Iterator<Key, Value>::MapIterator(nullptr);
+	}
+	int size()
 	{
 		return count;
 	}
 	Value& operator[](Key _key)
 	{
-		Value value;
-		bool flag = Find(_key, value);
+		Node<Key,Value>* node=nullptr;
+		bool flag = find_node(_key, node);
 		if (flag)
 		{
-			return value;
+			return node->data;
 		}
 		else
 		{
@@ -830,12 +937,27 @@ public:
 
 		}
 	}
-	void Clear()
+	
+	typename Iterator<Key, Value>::MapIterator begin() const
 	{
-		delete root;
+		return Iterator<Key, Value>::MapIterator(root);
+	}
+	typename Iterator<Key, Value>::MapIterator end() const
+	{
+		return Iterator<Key, Value>::MapIterator(nullptr);
+	}
+	void clear()
+	{
+		delete nilnode;
+		for (int i = 0; i < ptrs.size(); i++)
+		{
+			delete ptrs[i];
+		}
+		root = nullptr;
 	}
 };
 template<typename Key, typename Value>
 Node<Key, Value>* RBT<Key, Value>::nilnode = new Node<Key, Value>(NodeType::Black);
+
 //template<typename T>
 //Node<T>* RBT<T>::extranode = new Node<T>(NodeType::Black);

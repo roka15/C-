@@ -1,7 +1,7 @@
 #pragma once
 #include "CommonInclude.h"
-//namespace core
-//{
+namespace core
+{
     #define MEMORY_BYTE 16//32768 //32KB
 
 	class MemoryPool
@@ -22,16 +22,18 @@
 			byte* current;
 			std::vector<byte*> memorys;
 		};
+
+
 		static void Initialize();
 		static void Release();
 
 		static void* operator new(std::size_t _size);
 		static void operator delete(void* _memory,std::size_t _size);
 		static int AssignSize(std::size_t _size);
-	
+	    
 	private:
-		static std::map<std::size_t,memory_pool_info*> m_memory_pools;
+		static RBT<std::size_t,memory_pool_info*> m_memory_pools;
 	};
 
-//}
+}
 

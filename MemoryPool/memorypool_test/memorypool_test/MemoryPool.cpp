@@ -1,9 +1,9 @@
 #include "MemoryPool.h"
 
-//namespace core
-//{
+namespace core
+{
 
-std::map<std::size_t, MemoryPool::memory_pool_info*> MemoryPool::m_memory_pools;
+RBT<std::size_t, MemoryPool::memory_pool_info*> MemoryPool::m_memory_pools;
 
 MemoryPool::memory_pool_info::memory_pool_info() :current(nullptr)
 {
@@ -51,11 +51,14 @@ bool MemoryPool::memory_pool_info::AddMemoryPool(std::size_t _capacity, std::siz
 }
 MemoryPool::memory_pool_info::~memory_pool_info()
 {
-	for (auto pools : memorys)
+	for (int i=0;i<memorys.size();i++) 
 	{
-		delete pools;
+		delete memorys[i];
+		memorys[i] = nullptr;
 	}
 	current = nullptr;
+	memorys.clear();
+	memorys.~vector();
 }
 
 void MemoryPool::Initialize()
@@ -64,12 +67,12 @@ void MemoryPool::Initialize()
 
 void MemoryPool::Release()
 {
-	for (auto pool_info : m_memory_pools)
+	for (auto pool_info = m_memory_pools.begin();pool_info!=m_memory_pools.end();pool_info++)
 	{
-		pool_info.second->~memory_pool_info();
-		delete pool_info.second;
-		pool_info.second = nullptr;
+		delete (*pool_info);
+		(*pool_info) = nullptr;
 	}
+	/* 하고 싶었던것 for(auto pool_info : m_memory_pools) */
 	m_memory_pools.clear();
 }
 
@@ -84,6 +87,7 @@ void* MemoryPool::operator new(std::size_t _size)
 	{
 		return nullptr;
 	}
+	
 	if (m_memory_pools.find(size) == m_memory_pools.end())
 	{
 		m_memory_pools.insert(std::make_pair(size, new memory_pool_info(MEMORY_BYTE, size)));
@@ -111,7 +115,8 @@ void MemoryPool::operator delete(void* _memory, std::size_t _size)
 	int size = AssignSize(_size);
 	if (size == (int)EMemErrType::POOLSIZEOVER)
 	{
-		return free(_memory); // 단일 메모리 할당.
+		free(_memory); // 단일 메모리 할당.
+		return;
 	}
 	else if (size == (int)EMemErrType::WRONGSIZE)
 	{
@@ -143,4 +148,4 @@ int MemoryPool::AssignSize(std::size_t _size)
 	return static_cast<int>(EMemErrType::WRONGSIZE);
 }
 
-//}
+}
