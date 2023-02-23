@@ -103,7 +103,7 @@ void MemoryPool_2::End()
 {
 	int size = memorypools.Size();
 	int count = 0;
-	for (int i=8;i <= MAXMEMORY_BYTE/2;i++)
+	for (int i=8;i <= MAXMEMORY_BYTE/2;i*=2)
 	{
 		t_pool_info* pool = nullptr;
 		if (memorypools.Find(i,pool) == true)

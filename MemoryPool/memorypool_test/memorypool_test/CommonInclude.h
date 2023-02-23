@@ -2,6 +2,9 @@
 #include <string>
 #include <vector>
 #include <list>
+
+#include <iostream>
+#include <type_traits>
 //#include <map>
 
 #include <Windows.h>

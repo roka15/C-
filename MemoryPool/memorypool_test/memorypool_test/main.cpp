@@ -1,8 +1,9 @@
 #include "MemoryPool.h"
-#include <iostream>
+//#include <iostream>
 
 #include <cstdlib>
 #include <crtdbg.h>
+
 
 //#include <iostream>
 //#include "RBT.h"
@@ -21,22 +22,14 @@ int main()
 	//_CrtSetBreakAlloc(161);
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	{
-		Object* objs[5];
-		int index = 0;
-		for (int i = 0; i < 5; i++)
-		{
-			Object* obj = new Object();
-			objs[index] = obj;
-			index++;
-		}
-
-		objs[0]->a = 2;
-
-		delete objs[0];
-		delete objs[3];
-		delete objs[4];
-		delete objs[1];
-		delete objs[2];
+		Object obj;
+		Object* obj2 = new Object();
+		Object* objs;
+		objs = new (obj2)Object[5];
+		//Object* a = new(objs)Object[5];
+		Object* a = new(std::move(Object()))Object[5];
+		//delete[] objs;
+		
 		core::MemoryPool::Release();
 	}
 	
@@ -71,4 +64,5 @@ int main()
 	_map.clear();*/
 
 	//_CrtDumpMemoryLeaks();
+
 }

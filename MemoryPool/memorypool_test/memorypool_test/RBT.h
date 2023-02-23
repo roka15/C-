@@ -161,7 +161,6 @@ class RBT
 private:
 	Node<Key, Value>* root;
 	int count;
-	std::vector<Node<Key, Value>*> ptrs;
 	static Node<Key, Value>* nilnode;
 	//static Node<T>* extranode;
 private:
@@ -877,7 +876,6 @@ public:
 	void insert(std::pair<Key,Value> _pair)
 	{
 		Node<Key, Value>* node = new Node<Key, Value>(_pair.first, _pair.second, nilnode, NodeType::Red);
-		ptrs.push_back(node);
 		push_node(&root, node);
 		RBT_Insert(&node);
 		count++;
@@ -949,9 +947,9 @@ public:
 	void clear()
 	{
 		delete nilnode;
-		for (int i = 0; i < ptrs.size(); i++)
+		for (auto itr = begin(); itr != end(); itr++)
 		{
-			delete ptrs[i];
+			delete (*itr);
 		}
 		root = nullptr;
 	}
