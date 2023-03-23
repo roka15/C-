@@ -15,24 +15,68 @@ class Object :public core::MemoryPool
 public:
 	double a;
 	double b;
+	~Object() {}
+};
+class Obj2 :public Object
+{
+public:
+	float a;
+	float b;
+	//~Obj2() {  }
+};
+class test
+{
+public:
+	void operator delete(void* memory, std::size_t _size)
+	{
+		delete memory;
+	}
+};
+class M:public test
+{
+public:
+	int a;
+	//~M() { std::cout << "m ¼Ò¸êÀÚ"; }
+};
+class C:public M
+{
+public:
+	double b, c;
+	//~C() { std::cout << "c ¼Ò¸êÀÚ"; }
 };
 
 int main()
 {
-	//_CrtSetBreakAlloc(161);
+	//_CrtSetBreakAlloc(154);
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	{
-		Object obj;
-		Object* obj2 = new Object();
-		Object* objs;
-		objs = new (obj2)Object[5];
-		//Object* a = new(objs)Object[5];
-		Object* a = new(std::move(Object()))Object[5];
-		//delete[] objs;
-		
-		core::MemoryPool::Release();
-	}
 	
+	//{
+	//	Object obj;
+	//	Object* obj2 = new Object();
+	//	Object* objs;
+	//	objs = new (obj2)Object[5];
+	//	//Object* a = new(objs)Object[5];
+	//	Object* a = new(std::move(Object()))Object[5];
+	//	//delete[] objs;
+	//	
+	//	core::MemoryPool::Release();
+	//}
+	//
+	int size = sizeof(Object);
+	int size2 = sizeof(Obj2);
+
+	{
+		M* data = new M();
+		//std::shared_ptr<M> obj=std::make_shared<M>();
+		//std::shared_ptr<Obj2> obj(new Obj2());
+		std::shared_ptr<M> obj(new M());
+		int a = 0;
+		//delete data;
+	}
+	/*Obj2* obj=(new Obj2());
+	My* m = new My();*/
+	core::MemoryPool::Release();
+
 	//map iterator test
 	/*RBT<int, int> mymap;
 	mymap.Push(1, 1);

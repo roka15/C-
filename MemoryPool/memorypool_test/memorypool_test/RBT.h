@@ -94,8 +94,7 @@ public:
 					bool nillflag = false;
 					//현재 노드의 다음 노드들이 nill 인지 검사해서 
 					//nill 이면 queue에 안넣음.
-					if (left->type == NodeType::Black &&
-						left->left == nullptr && left->right == nullptr)
+					if (nillnode_check(left))
 					{
 						nillflag = true;
 					}
@@ -103,8 +102,7 @@ public:
 					{
 						nodequeue.push(cur->left);
 					}
-					if (right->type == NodeType::Black &&
-						right->left == nullptr && right->right == nullptr)
+					if (nillnode_check(right))
 					{
 						if (nillflag == true)
 						{
@@ -127,7 +125,6 @@ public:
 			for (int i = 0; i < node_array.size(); i++)
 				node_array[i] = nullptr;
 			node_array.clear();
-			node_array.~vector();
 		}
 		bool operator==(const Iterator<Key, Value>::MapIterator& _ref)
 		{
@@ -146,7 +143,20 @@ public:
 			curptr = node_array[cur_index++];
 			return *this;
 		}
-
+		bool nillnode_check(Node<Key,Value>* _ptr)
+		{
+			if (_ptr->type == NodeType::Black &&
+				_ptr->left == nullptr && _ptr->right == nullptr)
+				return true;
+			else return false;
+		}
+		Node<Key,Value>* GetCurPtr() 
+		{
+			if (nillnode_check(curptr)==true || curptr==nullptr)
+				return nullptr;
+			
+			return curptr;
+		}
 	private:
 		Node<Key, Value>* curptr;
 		std::vector<Node<Key, Value>*> node_array;
@@ -946,12 +956,13 @@ public:
 	}
 	void clear()
 	{
-		delete nilnode;
 		for (auto itr = begin(); itr != end(); itr++)
 		{
-			delete (*itr);
+			delete itr.GetCurPtr();
 		}
 		root = nullptr;
+		delete nilnode;
+		nilnode = nullptr;
 	}
 };
 template<typename Key, typename Value>
