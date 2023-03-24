@@ -45,11 +45,21 @@ public:
 	//~C() { std::cout << "c ¼Ò¸êÀÚ"; }
 };
 
+class X
+{
+public:
+	std::shared_ptr<int> sp;
+	void Deletesp()
+	{
+		sp.reset();
+	}
+};
 int main()
 {
 	//_CrtSetBreakAlloc(154);
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	
+	RBT<int, int> rbt;
+
 	//{
 	//	Object obj;
 	//	Object* obj2 = new Object();
@@ -62,20 +72,31 @@ int main()
 	//	core::MemoryPool::Release();
 	//}
 	//
-	int size = sizeof(Object);
-	int size2 = sizeof(Obj2);
 
-	{
-		M* data = new M();
-		//std::shared_ptr<M> obj=std::make_shared<M>();
-		//std::shared_ptr<Obj2> obj(new Obj2());
-		std::shared_ptr<M> obj(new M());
-		int a = 0;
-		//delete data;
-	}
+	//std::shared_ptr<int> sp(new int());
+	//X x;
+	//{
+	//	x.sp = sp;
+	//	x.Deletesp();
+	//	std::cout << sp.use_count();
+	//}
+	//std::cout << sp.use_count();
+	//int size = sizeof(Object);
+	//int size2 = sizeof(Obj2);
+
+	//{
+	//	M* data = new M();
+	//	//std::shared_ptr<M> obj=std::make_shared<M>();
+	//	//std::shared_ptr<Obj2> obj(new Obj2());
+	//	std::shared_ptr<M> obj(data);
+	//	int a = 0;
+	//	//delete data;
+	//}
 	/*Obj2* obj=(new Obj2());
 	My* m = new My();*/
-	core::MemoryPool::Release();
+
+	//Object* obj = new Object();
+	//core::MemoryPool::Release();
 
 	//map iterator test
 	/*RBT<int, int> mymap;

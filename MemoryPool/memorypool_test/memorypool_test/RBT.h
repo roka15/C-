@@ -172,6 +172,7 @@ private:
 	Node<Key, Value>* root;
 	int count;
 	static Node<Key, Value>* nilnode;
+	static std::shared_ptr< Node<Key, Value>> nil;
 	//static Node<T>* extranode;
 private:
 #pragma region red_black_tree func
@@ -882,6 +883,10 @@ public:
 	RBT() :root(nilnode), count(0)
 	{
 
+	}
+	~RBT()
+	{
+		delete nilnode;
 	}
 	void insert(std::pair<Key,Value> _pair)
 	{

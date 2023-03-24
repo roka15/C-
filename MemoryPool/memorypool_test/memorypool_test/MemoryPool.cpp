@@ -4,6 +4,8 @@ namespace core
 {
 
 RBT<std::size_t, MemoryPool::memory_pool_info*> MemoryPool::m_memory_pools;
+std::shared_ptr<RBT<std::size_t, MemoryPool::memory_pool_info*>> MemoryPool::sp_pools(&m_memory_pools
+	, [](void*)->void {std::cout<<"release"<<std::endl;MemoryPool::Release(); });
 
 MemoryPool::memory_pool_info::memory_pool_info() :current(nullptr)
 {

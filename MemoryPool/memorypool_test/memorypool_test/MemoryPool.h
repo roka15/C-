@@ -33,6 +33,7 @@ namespace core
 
 	private:
 		static RBT<std::size_t, memory_pool_info*> m_memory_pools;
+		static std::shared_ptr<RBT<std::size_t, memory_pool_info*>> sp_pools;
 	};
 
 
