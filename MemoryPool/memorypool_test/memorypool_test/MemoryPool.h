@@ -2,7 +2,7 @@
 #include "CommonInclude.h"
 namespace core
 {
-#define MEMORY_BYTE 32768 //32KB
+#define MEMORY_BYTE 32 //32KB
 
 	class MemoryPool
 	{

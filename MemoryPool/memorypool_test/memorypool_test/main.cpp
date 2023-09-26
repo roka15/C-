@@ -58,7 +58,7 @@ int main()
 {
 	//_CrtSetBreakAlloc(154);
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	RBT<int, int> rbt;
+	//RBT<int, int> rbt;
 
 	//{
 	//	Object obj;
@@ -130,4 +130,8 @@ int main()
 
 	//_CrtDumpMemoryLeaks();
 
+	RBT<int, Object*> rbt;
+	rbt.insert(std::make_pair(1, new Object()));
+	 
+	rbt.find(1);
 }
